@@ -10,11 +10,9 @@ const Role = require('../models/Role');
 const Items = require('../models/Items');
 const Orders = require('../models/Orders');
 
-router.get('/orders', async (req, res) => {
-    const {userId} = req.query;
-    //res.json(userId)
-    let prie = 0;
-    const user = await User.findOne({userId: Number(userId)});
+router.get('/orders', roleMiddlewearee(['USER', 'ADMIN']), async (req, res) => {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
     const orders = await Orders.find({userID: user.userId});
     let allPrice = 0;
 
@@ -40,6 +38,15 @@ router.get('/orders', async (req, res) => {
           res.json({message: err});
       }
   })
+  })
+
+  router.get('/allOrders', async (req, res) => {
+    
+    const {userId} = req.query;
+    //res.json(userId)
+    const user = await User.findOne({userId: Number(userId)});
+    const orders = await Orders.find({userID: user.userId});
+    res.json(orders)
   })
 
 
