@@ -80,6 +80,26 @@ class controllerItemsAndOrders{
             res.status(400).json({message:'Dont update the item'})       
         }
     }
+
+    async getOrders(req, res){
+        try{
+            const orders = await Orders.find()
+            res.json(orders)
+        }catch(e){
+
+        }
+
+    }
+
+    async getItems(req, res){
+        try{
+            const items = await Items.find()
+            res.json(items)
+        }catch(e){
+
+        }
+
+    }
     
 }
 

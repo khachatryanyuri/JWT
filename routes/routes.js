@@ -24,44 +24,31 @@ router.get('/orders', roleMiddlewearee(['USER', 'ADMIN']), async (req, res) => {
       })
       res.json(allPrice);
     }
-  })
-  //By user
-  router.get('/byuser/:itemID',async (req, res) => {
-    const {inStock} = req.query;  
-    res.json(inStock)
-    inStock -= inStock
-    router.put(async (req, res)=>{
-      try{
-      const updateItem = await Items.updateOne({_id: req.params.itemID}, inStock);
-          res.json(updateItem);
-      } catch(err){
-          res.json({message: err});
-      }
-  })
-  })
-
-  router.get('/allOrders', async (req, res) => {
-    
-    const {userId} = req.query;
-    //res.json(userId)
-    const user = await User.findOne({userId: Number(userId)});
-    const orders = await Orders.find({userID: user.userId});
-    res.json(orders)
-  })
-
-
-
-  
-// router.get
-
+  }) 
+ 
 // get all ordered items for user and count of every bought item and sorted by most popular
-router.get('/items-and-counts',roleMiddlewearee(['ADMIN', 'USER']),  (req, res) => {
-
+router.get('/items-and-counts',roleMiddlewearee(['ADMIN', 'USER']), async (req, res) => {
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  const orders = await Orders.find({userID: user.userId});
+  res.json(orders);
 })
 
 // get all ordered items for user (unique items)
-router.get('/orders-sum',roleMiddlewearee(['ADMIN', 'USER']),  (req, res) => {
-
+router.get('/orders-sum',roleMiddlewearee(['ADMIN', 'USER']), async  (req, res) => {
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  const orders = await Orders.find({userID: user.userId});
+  for(let i = 0; i<orders.length; i++){
+    var n = 0;
+    var item = new Array();
+    item [n] = orders[i].items; 
+    n++;
+  }
+    res.json(item[i])  
+  
+  //const items = await Items.find({orders: orders.items});
+  //res.json(items);
 })
 
 // get items for every order nested

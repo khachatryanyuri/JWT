@@ -14,6 +14,8 @@ controller.registration);
 router.post('/login', controller.login);
 router.get('/users',roleMiddlewearee(['ADMIN']), controller.getUsers);
 router.post('/item',roleMiddlewearee(['ADMIN']), controllerItemsAndOrders.createItem);
+router.get('/items',roleMiddlewearee(['ADMIN']), controllerItemsAndOrders.getItems);
+router.get('/orders',roleMiddlewearee(['ADMIN']), controllerItemsAndOrders.getOrders);
 router.post('/order',roleMiddlewearee(['ADMIN']), controllerItemsAndOrders.createOrder);
 router.delete('/delete/:itemID',roleMiddlewearee(['ADMIN']), controllerItemsAndOrders.deleteItem);
 router.delete('/delete/:orderID',roleMiddlewearee(['ADMIN']), controllerItemsAndOrders.deleteOrder);
